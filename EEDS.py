@@ -1,6 +1,7 @@
 import streamlit
 import numpy
 import pandas
+from matplotlib import pyplot
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
 from sklearn.preprocessing import StandardScaler
@@ -23,8 +24,25 @@ lr = LinearRegression()
 model = lr.fit(X_train, Y_train)
 Y_pred = model.predict(X_test)
 
-print("R2 Score:",r2_score(Y_test,Y_pred))
+r2 = r2_score(Y_test,Y_pred)
+print("R2 Score:",r2)
 print("MAPE:",mean_absolute_percentage_error(Y_test,Y_pred))
+
+# --- Code to show R2-Score graph in Streamlit ---
+
+# 1. Create a Matplotlib Figure object
+fig, ax = pyplot.subplots(figsize=(6, 4))
+
+# 2. Plot the bar chart on the Axes object
+ax.bar(['LinearRegression'], [r2], color='skyblue')
+ax.set_ylim(0, 1.0)
+ax.set_title("Model R2-Score")
+ax.set_ylabel("R2-Score")
+
+
+streamlit.subheader("Model Performance")
+streamlit.pyplot(fig)
+
 
 streamlit.header("Energy Efficiency Prediction")
 
